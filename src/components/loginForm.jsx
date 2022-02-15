@@ -18,7 +18,9 @@ class LoginForm extends Form {
     // Call the server
     try {
       const { data } = this.state;
-      login(data.username, data.password);
+      const { data: jwt } = await login(data.username, data.password);
+      localStorage.setItem('token', jwt);
+      window.location = '/'; // Will cause a full reload of the web page
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };
